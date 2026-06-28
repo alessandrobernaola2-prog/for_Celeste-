@@ -10,7 +10,7 @@
             --dark-night: #040714;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --gold-text: #fef08a;
-            --header-height: 140px; /* Altura para el encabezado */
+            --header-height: 120px; /* Altura optimizada para el encabezado */
         }
 
         body {
@@ -18,7 +18,6 @@
             background: var(--dark-night);
             color: #e2e8f0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex; justify-content: center; align-items: center;
             min-height: 100vh; overflow: hidden; perspective: 1200px;
         }
 
@@ -44,81 +43,76 @@
         .header-banner {
             position: fixed; top: 0; left: 0; width: 100%;
             height: var(--header-height); z-index: 10;
-            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
-            text-align: center; padding: 0 20px; box-sizing: border-box;
+            text-align: center; padding: 0 15px; box-sizing: border-box;
         }
         .birthday-title {
-            font-size: 2.2rem; font-weight: bold; color: var(--gold-text);
-            margin: 0 0 10px 0; text-shadow: 0 0 15px rgba(254, 240, 138, 0.6);
+            font-size: 2rem; font-weight: bold; color: var(--gold-text);
+            margin: 0 0 5px 0; text-shadow: 0 0 15px rgba(254, 240, 138, 0.6);
         }
         .bouquet-desc {
-            font-size: 1.2rem; color: #a1a1aa; margin: 0; text-shadow: 0 0 5px rgba(226, 232, 240, 0.3);
+            font-size: 1.1rem; color: #a1a1aa; margin: 0; text-shadow: 0 0 5px rgba(226, 232, 240, 0.3);
         }
 
-        /* === CONTENEDORES === */
+        /* === CONTENEDORES PRINCIPALES === */
         #screen1, #screen2 {
-            position: absolute; width: 100%; 
-            top: var(--header-height); height: calc(100% - var(--header-height));
+            position: absolute; 
+            top: var(--header-height); /* Empiezan justo debajo del encabezado */
+            left: 0; width: 100%; 
+            height: calc(100vh - var(--header-height)); /* Toman solo el espacio restante */
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1; transition: opacity 1s ease, transform 1s ease;
+            box-sizing: border-box; padding-bottom: 20px;
         }
         #screen2 { opacity: 0; pointer-events: none; transform: scale(0.9) rotateY(-15deg); }
         .hide { opacity: 0 !important; transform: scale(1.1) rotateY(15deg) !important; pointer-events: none; }
         .show { opacity: 1 !important; transform: scale(1) rotateY(0deg) !important; pointer-events: auto !important; }
 
-        /* === CONTENEDOR DEL RAMO === */
+        /* === CONTENEDOR DEL RAMO (CORREGIDO PARA NO CORTARSE) === */
         .bouquet-wrapper {
-            width: 90vw; max-width: 600px;
-            aspect-ratio: 6 / 7;
+            width: 90vw; 
+            max-width: 500px;
+            /* La altura ahora depende del tamaño de la pantalla, evitando que desborde hacia arriba */
+            height: 55vh; 
+            max-height: 550px; 
+            min-height: 300px;
             transform-style: preserve-3d;
             animation: floatBouquet 6s ease-in-out infinite alternate;
+            margin-bottom: 15px;
+            display: flex; justify-content: center; align-items: center;
         }
         .bouquet-wrapper svg {
-            width: 100%; height: 100%; display: block;
+            width: 100%; height: 100%; 
+            /* Esto obliga al SVG a no deformarse y entrar completo en el contenedor */
+            object-fit: contain; 
+            display: block;
         }
         @keyframes floatBouquet {
             0% { transform: translateY(5px) rotateX(2deg); }
             100% { transform: translateY(-15px) rotateX(-2deg); }
         }
 
-        /* === ANIMACIONES SVG SEGURAS (CROSS-BROWSER) === */
+        /* === ANIMACIONES SVG === */
         .stem-anim { stroke-dasharray: 800; stroke-dashoffset: 800; animation: drawStem 2.5s ease-out forwards; }
         @keyframes drawStem { to { stroke-dashoffset: 0; } }
 
-        .leaf-anim, .petal-anim, .bloom-anim {
-            opacity: 0;
-            transform-box: fill-box;
-            -webkit-transform-box: fill-box;
-        }
-        .leaf-anim, .petal-anim {
-            transform-origin: bottom center;
-            animation: growPetal 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        .bloom-anim {
-            transform-origin: center;
-            animation: popIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes growPetal {
-            0% { opacity: 0; transform: scale(0) rotate(0deg); }
-            100% { opacity: 1; transform: scale(1) rotate(var(--r)); }
-        }
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0) rotate(-45deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
+        .leaf-anim, .petal-anim, .bloom-anim { opacity: 0; transform-box: fill-box; -webkit-transform-box: fill-box; }
+        .leaf-anim, .petal-anim { transform-origin: bottom center; animation: growPetal 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .bloom-anim { transform-origin: center; animation: popIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes growPetal { 0% { opacity: 0; transform: scale(0) rotate(0deg); } 100% { opacity: 1; transform: scale(1) rotate(var(--r)); } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0) rotate(-45deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
 
         /* === BOTÓN === */
         .btn {
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
             color: white; border: 2px solid rgba(255, 255, 255, 0.4);
-            padding: 18px 50px; border-radius: 40px; font-size: 1.3rem;
+            padding: 16px 45px; border-radius: 40px; font-size: 1.2rem;
             cursor: pointer; font-weight: bold; z-index: 2;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
             transition: all 0.3s ease; animation: pulseBtn 2s infinite alternate;
-            margin-top: 10px; /* Separación del ramo */
         }
         @keyframes pulseBtn { 0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 100% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.9); } }
         .btn:hover { transform: translateY(-5px) scale(1.05); }
@@ -127,44 +121,36 @@
         .letter-card {
             background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 50px; border-radius: 25px;
-            max-width: 650px; width: 85%; max-height: 80vh; overflow-y: auto;
-            text-align: left; line-height: 1.8; font-size: 1.15rem;
+            padding: 40px; border-radius: 25px;
+            max-width: 650px; width: 85%; 
+            max-height: calc(100vh - var(--header-height) - 40px); /* Evita que la carta se corte */
+            overflow-y: auto;
+            text-align: left; line-height: 1.7; font-size: 1.1rem;
             box-shadow: 0 25px 60px rgba(0,0,0,0.8);
             border-top: 4px solid #3b82f6;
         }
-        .letter-card p { margin-bottom: 20px; text-align: justify; color: #f8fafc; }
+        .letter-card p { margin-bottom: 15px; text-align: justify; color: #f8fafc; }
         .letter-card p:last-child { margin-bottom: 0; }
         .letter-card::-webkit-scrollbar { width: 8px; }
         .letter-card::-webkit-scrollbar-track { background: transparent; }
         .letter-card::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.6); border-radius: 10px; }
 
-        /* === AJUSTES PARA CELULARES (DISEÑO RESPONSIVO) === */
+        /* === DISEÑO RESPONSIVO (MÓVILES) === */
         @media (max-width: 768px) {
-            :root { --header-height: 110px; }
-            .birthday-title { font-size: 1.6rem; }
-            .bouquet-desc { font-size: 1rem; }
-            .btn {
-                padding: 15px 35px;
-                font-size: 1.1rem;
-                margin-top: 5px;
-            }
-            .letter-card {
-                padding: 30px 25px;
-                width: 90%;
-                font-size: 1rem;
-                line-height: 1.6;
-            }
-            .bouquet-wrapper {
-                max-width: 95vw; /* Da un poco más de espacio a lo ancho en móviles */
-            }
+            :root { --header-height: 100px; }
+            .birthday-title { font-size: 1.5rem; }
+            .bouquet-desc { font-size: 0.95rem; }
+            .btn { padding: 14px 30px; font-size: 1.1rem; }
+            .letter-card { padding: 25px 20px; font-size: 1rem; line-height: 1.6; }
+            .bouquet-wrapper { height: 60vh; }
         }
-        /* Ajuste para pantallas pequeñas en altura (apaisado o celulares bajitos) */
-        @media (max-height: 700px) {
-            .bouquet-wrapper {
-                max-height: 60vh;
-                width: auto;
-            }
+        /* Para pantallas acostadas (landscape) o monitores muy anchos pero bajitos */
+        @media (max-height: 600px) {
+            :root { --header-height: 80px; }
+            .birthday-title { font-size: 1.2rem; }
+            .bouquet-desc { font-size: 0.8rem; }
+            .bouquet-wrapper { height: 65vh; margin-bottom: 5px; }
+            .btn { padding: 10px 25px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -176,7 +162,7 @@
     </div>
 
     <header class="header-banner">
-        <h1 class="birthday-title">🎉 ¡Feliz Cumpleaños, Celeste🩵! 🎉</h1>
+        <h1 class="birthday-title">🎉 ¡Feliz Cumpleaños, Celeste! 🎉</h1>
         <p class="bouquet-desc">💐 Un ramo virtual para ti. 💐</p>
     </header>
 
