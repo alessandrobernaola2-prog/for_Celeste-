@@ -7,11 +7,9 @@
     <style>
         /* === ESTILOS GENERALES === */
         :root {
-            --primary-blue: #3b82f6;
             --dark-night: #060a1f;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --gold-text: #fef08a;
-            --blue-light: #93c5fd;
         }
 
         body {
@@ -33,7 +31,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none;
-            background: radial-gradient(circle at center, #1e3a8a, var(--dark-night) 70%);
+            background: radial-gradient(circle at center, #0f2050, var(--dark-night) 80%);
         }
         .stars {
             position: absolute;
@@ -44,28 +42,27 @@
                 radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0));
             background-repeat: repeat;
             background-size: 200px 200px;
-            animation: twinkle 5s infinite linear;
+            animation: twinkle 6s infinite linear;
         }
-        .stars.layer2 { background-size: 300px 300px; animation-duration: 7s; animation-direction: reverse; opacity: 0.6; }
-        .stars.layer3 { background-size: 400px 400px; animation-duration: 9s; opacity: 0.4; }
-
+        .stars.layer2 { background-size: 300px 300px; animation-duration: 9s; animation-direction: reverse; opacity: 0.6; }
+        
         @keyframes twinkle { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 100px); } }
 
         .floating-orb {
             position: absolute;
-            background: radial-gradient(circle at center, rgba(147, 197, 253, 0.4), transparent 70%);
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.3), transparent 70%);
             border-radius: 50%;
-            filter: blur(10px);
-            animation: floatOrb 8s infinite ease-in-out;
+            filter: blur(15px);
+            animation: floatOrb 8s infinite ease-in-out alternate;
             pointer-events: none;
         }
 
         @keyframes floatOrb {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.2; }
-            50% { transform: translateY(-40px) scale(1.1); opacity: 0.4; }
+            0% { transform: translateY(0) scale(1); opacity: 0.3; }
+            100% { transform: translateY(-30px) scale(1.2); opacity: 0.6; }
         }
 
-        /* === CONTENEDORES DE PANTALLAS === */
+        /* === CONTENEDORES === */
         #screen1, #screen2 {
             position: absolute;
             width: 100%;
@@ -78,72 +75,98 @@
             transition: opacity 1s ease, transform 1s ease;
         }
 
-        #screen2 {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.9) rotateY(-15deg);
-        }
-
+        #screen2 { opacity: 0; pointer-events: none; transform: scale(0.9) rotateY(-15deg); }
         .hide { opacity: 0 !important; transform: scale(1.1) rotateY(15deg) !important; pointer-events: none; }
         .show { opacity: 1 !important; transform: scale(1) rotateY(0deg) !important; pointer-events: auto !important; }
 
-        /* === RAMO DE FLORES VOLUPTUOSO Y EXUBERANTE (SVG/CSS) === */
+        /* === RAMO DE FLORES === */
         .bouquet-wrapper {
             width: 500px;
             height: 600px;
             transform-style: preserve-3d;
-            animation: floatBouquet 6s ease-in-out infinite;
+            animation: floatBouquet 5s ease-in-out infinite alternate;
         }
+        
         @keyframes floatBouquet {
-            0%, 100% { transform: translateY(0px) rotateX(0deg); }
-            50% { transform: translateY(-20px) rotateX(2deg); }
+            0% { transform: translateY(5px) rotateX(2deg); }
+            100% { transform: translateY(-15px) rotateX(-2deg); }
         }
 
-        /* Animaciones internas del SVG */
-        .stem { transform-origin: bottom center; animation: sway 5s ease-in-out infinite alternate; }
-        .petal { transform-origin: center bottom; animation: openPetal 3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
-        .mini-bloom { transform-origin: center; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform: scale(0); opacity: 0; }
+        /* Animaciones SVG Corregidas */
+        .stem-anim {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: drawStem 2s ease-out forwards;
+        }
+        @keyframes drawStem { to { stroke-dashoffset: 0; } }
 
-        @keyframes sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
-        @keyframes openPetal { 0% { transform: scale(0) rotate(0deg); opacity: 0; } 100% { transform: scale(1) rotate(var(--r)); opacity: 1; } }
-        @keyframes popIn { to { transform: scale(1); opacity: 1; } }
+        /* Fix para navegadores: transform-box: fill-box es la clave */
+        .leaf-anim {
+            opacity: 0;
+            transform-box: fill-box;
+            -webkit-transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: growLeaf 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes growLeaf {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            100% { opacity: 1; transform: scale(1) rotate(var(--r)); }
+        }
+
+        .petal-anim {
+            opacity: 0;
+            transform-box: fill-box;
+            -webkit-transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: growPetal 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes growPetal {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            100% { opacity: 1; transform: scale(1) rotate(var(--r)); }
+        }
+
+        .bloom-anim {
+            opacity: 0;
+            transform-box: fill-box;
+            -webkit-transform-box: fill-box;
+            transform-origin: center;
+            animation: popIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0) rotate(-60deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
 
         /* === BOTÓN === */
         .btn {
             background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 18px 50px;
             border-radius: 40px;
             font-size: 1.3rem;
             cursor: pointer;
-            box-shadow: 0 5px 25px rgba(59, 130, 246, 0.6);
-            transition: all 0.4s ease;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            transition: all 0.3s ease;
             font-weight: bold;
-            margin-top: -30px;
+            margin-top: -20px;
             z-index: 2;
-            position: relative;
-            overflow: hidden;
+            animation: pulseBtn 2s infinite alternate;
         }
-        .btn::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3), transparent 70%);
-            transform: scale(0); transition: transform 0.6s ease;
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
+            100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
         }
-        .btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 30px rgba(59, 130, 246, 0.8);
-        }
-        .btn:hover::after { transform: scale(1); }
+        .btn:hover { transform: translateY(-5px) scale(1.05); }
 
-        /* === CARTA (GLASSMORPHISM CON BORDE FLORAL) === */
+        /* === CARTA === */
         .letter-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            padding: 50px;
-            border-radius: 30px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            padding: 45px;
+            border-radius: 25px;
             max-width: 650px;
             width: 85%;
             max-height: 80vh;
@@ -151,56 +174,43 @@
             text-align: left;
             line-height: 1.8;
             font-size: 1.15rem;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            position: relative;
-            transform-style: preserve-3d;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
         }
-        
-        /* Borde floral escultórico */
-        .letter-card::before {
-            content: ''; position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
-            border: 10px solid transparent;
-            border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3C%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%233b82f6'/%3E%3Cstop offset='100%25' stop-color='%2393c5fd'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M10,10 C20,0 30,10 40,0 L60,0 C70,10 80,0 90,10 C100,20 90,30 100,40 L100,60 C90,70 100,80 90,90 C80,100 70,90 60,100 L40,100 C30,90 20,100 10,90 C0,80 10,70 0,60 L0,40 C10,30 0,20 10,10 Z' fill='none' stroke='url(%23grad)' stroke-width='3'/%3E%3C/svg%3E") 30 stretch;
-            pointer-events: none; border-radius: 40px;
-        }
-
-        .letter-card p { margin-bottom: 20px; text-align: justify; color: var(--gold-text); }
+        .letter-card p { margin-bottom: 20px; text-align: justify; color: #f8fafc; }
         .letter-card p:last-child { margin-bottom: 0; }
         
-        /* Scrollbar personalizado */
         .letter-card::-webkit-scrollbar { width: 8px; }
         .letter-card::-webkit-scrollbar-track { background: transparent; }
-        .letter-card::-webkit-scrollbar-thumb { background: rgba(147, 197, 253, 0.6); border-radius: 10px; }
+        .letter-card::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.6); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- Fondo Interactivo -->
+    <!-- Fondo Mágico -->
     <div class="stars-container">
         <div class="stars"></div>
         <div class="stars layer2"></div>
-        <div class="stars layer3"></div>
-        <!-- Orbes flotantes matemáticos -->
-        <div class="floating-orb" style="width: 100px; height: 100px; top: 20%; left: 10%; animation-delay: 0s;"></div>
-        <div class="floating-orb" style="width: 150px; height: 150px; top: 60%; left: 80%; animation-delay: -2s;"></div>
-        <div class="floating-orb" style="width: 80px; height: 80px; top: 80%; left: 30%; animation-delay: -4s;"></div>
-        <div class="floating-orb" style="width: 120px; height: 120px; top: 10%; left: 70%; animation-delay: -6s;"></div>
+        <div class="floating-orb" style="width: 150px; height: 150px; top: 20%; left: 15%;"></div>
+        <div class="floating-orb" style="width: 200px; height: 200px; top: 60%; left: 75%; animation-delay: -2s;"></div>
     </div>
 
-    <!-- PANTALLA 1: Flores y Botón -->
+    <!-- PANTALLA 1: El Ramo Voluptuoso -->
     <div id="screen1">
         <div class="bouquet-wrapper">
-            <!-- Flores programadas en SVG - Diseño Voluptuoso -->
             <svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="stemColor" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#2d6a4f"/>
-                        <stop offset="100%" stop-color="#40916c"/>
+                        <stop offset="0%" stop-color="#14532d"/>
+                        <stop offset="100%" stop-color="#22c55e"/>
+                    </linearGradient>
+                    <linearGradient id="leafColor" x1="0%" y1="100%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#064e3b"/>
+                        <stop offset="100%" stop-color="#16a34a"/>
                     </linearGradient>
                     <radialGradient id="lilyColor" cx="50%" cy="80%" r="80%">
                         <stop offset="0%" stop-color="#1e3a8a"/>
                         <stop offset="50%" stop-color="#3b82f6"/>
-                        <stop offset="100%" stop-color="#93c5fd"/>
+                        <stop offset="100%" stop-color="#bfdbfe"/>
                     </radialGradient>
                     <radialGradient id="hortensiaColor" cx="50%" cy="50%" r="50%">
                         <stop offset="0%" stop-color="#60a5fa"/>
@@ -212,70 +222,92 @@
                         <circle cx="0" cy="7" r="7" fill="url(#hortensiaColor)" />
                         <circle cx="-7" cy="0" r="7" fill="url(#hortensiaColor)" />
                         <circle cx="7" cy="0" r="7" fill="url(#hortensiaColor)" />
-                        <circle cx="0" cy="0" r="4" fill="#bfdbfe" />
+                        <circle cx="0" cy="0" r="4" fill="#eff6ff" />
                     </g>
                     
                     <g id="lily-petal">
                         <path d="M0,0 C-25,-35 -35,-70 0,-90 C35,-70 25,-35 0,0" fill="url(#lilyColor)" />
                     </g>
+
+                    <g id="leaf">
+                        <path d="M0,0 Q-40,-30 0,-90 Q40,-30 0,0" fill="url(#leafColor)" />
+                    </g>
                 </defs>
 
-                <!-- Tallos principales más densos -->
-                <path d="M250,550 Q250,350 250,250" stroke="url(#stemColor)" stroke-width="9" fill="none" class="stem"/>
-                <path d="M250,550 Q180,400 120,300" stroke="url(#stemColor)" stroke-width="7" fill="none" class="stem" style="animation-delay: -1s"/>
-                <path d="M250,550 Q320,400 380,300" stroke="url(#stemColor)" stroke-width="7" fill="none" class="stem" style="animation-delay: -2s"/>
-                <path d="M250,550 Q150,450 80,380" stroke="url(#stemColor)" stroke-width="6" fill="none" class="stem" style="animation-delay: -3s"/>
-                <path d="M250,550 Q350,450 420,380" stroke="url(#stemColor)" stroke-width="6" fill="none" class="stem" style="animation-delay: -4s"/>
+                <!-- Tallos principales (Dibujados dinámicamente) -->
+                <path d="M250,580 Q250,380 250,250" stroke="url(#stemColor)" stroke-width="10" fill="none" class="stem-anim"/>
+                <path d="M250,580 Q160,420 120,300" stroke="url(#stemColor)" stroke-width="8" fill="none" class="stem-anim" style="animation-delay: 0.2s;"/>
+                <path d="M250,580 Q340,420 380,300" stroke="url(#stemColor)" stroke-width="8" fill="none" class="stem-anim" style="animation-delay: 0.4s;"/>
 
-                <!-- Lirios Grandes y Detallados -->
-                <g transform="translate(120, 300) scale(1.1)" class="stem">
-                    <use href="#lily-petal" class="petal" style="--r: -30deg; animation-delay: 0.3s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: 50deg; animation-delay: 0.5s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: -80deg; animation-delay: 0.7s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: 100deg; animation-delay: 0.9s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: -140deg; animation-delay: 1.1s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: 160deg; animation-delay: 1.3s;"/>
-                    <path d="M0,0 Q-12,-50 -18,-60" stroke="#fef08a" stroke-width="2.5" fill="none" class="petal" style="animation-delay: 1.6s;"/>
-                    <path d="M0,0 Q12,-50 18,-60" stroke="#fef08a" stroke-width="2.5" fill="none" class="petal" style="animation-delay: 1.6s;"/>
-                    <circle cx="-18" cy="-60" r="4" fill="#ca8a04" class="petal" style="animation-delay: 1.6s;"/>
-                    <circle cx="18" cy="-60" r="4" fill="#ca8a04" class="petal" style="animation-delay: 1.6s;"/>
+                <!-- Hojas para dar volumen -->
+                <g transform="translate(250, 400)">
+                    <use href="#leaf" class="leaf-anim" style="--r: -50deg; animation-delay: 1s;"/>
+                    <use href="#leaf" class="leaf-anim" style="--r: 50deg; animation-delay: 1.2s;"/>
+                </g>
+                <g transform="translate(180, 450)">
+                    <use href="#leaf" class="leaf-anim" style="--r: -70deg; animation-delay: 1.4s;"/>
+                </g>
+                <g transform="translate(320, 450)">
+                    <use href="#leaf" class="leaf-anim" style="--r: 70deg; animation-delay: 1.6s;"/>
                 </g>
 
-                <g transform="translate(380, 300) scale(1.1)" class="stem" style="animation-delay: -1.5s">
-                    <use href="#lily-petal" class="petal" style="--r: 30deg; animation-delay: 0.6s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: -50deg; animation-delay: 0.8s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: 80deg; animation-delay: 1s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: -100deg; animation-delay: 1.2s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: 140deg; animation-delay: 1.4s;"/>
-                    <use href="#lily-petal" class="petal" style="--r: -160deg; animation-delay: 1.6s;"/>
-                    <path d="M0,0 Q-12,-50 -18,-60" stroke="#fef08a" stroke-width="2.5" fill="none" class="petal" style="animation-delay: 1.9s;"/>
-                    <path d="M0,0 Q12,-50 18,-60" stroke="#fef08a" stroke-width="2.5" fill="none" class="petal" style="animation-delay: 1.9s;"/>
-                    <circle cx="-18" cy="-60" r="4" fill="#ca8a04" class="petal" style="animation-delay: 1.9s;"/>
-                    <circle cx="18" cy="-60" r="4" fill="#ca8a04" class="petal" style="animation-delay: 1.9s;"/>
+                <!-- Lirios (Izquierda y Derecha) -->
+                <g transform="translate(120, 300) scale(1.15)">
+                    <use href="#lily-petal" class="petal-anim" style="--r: -30deg; animation-delay: 1.5s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: 40deg; animation-delay: 1.7s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: -80deg; animation-delay: 1.9s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: 90deg; animation-delay: 2.1s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: -140deg; animation-delay: 2.3s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: 150deg; animation-delay: 2.5s;"/>
+                    <!-- Pistilos -->
+                    <circle cx="-15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.8s;"/>
+                    <circle cx="15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.8s;"/>
                 </g>
 
-                <!-- Hortensia Central Más Voluptuosa -->
-                <g transform="translate(250, 240)" class="stem">
-                    <use href="#mini-flower" x="0" y="0" class="mini-bloom" style="animation-delay: 1.2s; transform: scale(1.7);"/>
-                    <use href="#mini-flower" x="-25" y="-20" class="mini-bloom" style="animation-delay: 1.4s; transform: scale(1.5);"/>
-                    <use href="#mini-flower" x="25" y="-20" class="mini-bloom" style="animation-delay: 1.6s; transform: scale(1.5);"/>
-                    <use href="#mini-flower" x="-30" y="20" class="mini-bloom" style="animation-delay: 1.8s; transform: scale(1.4);"/>
-                    <use href="#mini-flower" x="30" y="20" class="mini-bloom" style="animation-delay: 2.0s; transform: scale(1.4);"/>
-                    <use href="#mini-flower" x="0" y="-45" class="mini-bloom" style="animation-delay: 2.2s; transform: scale(1.6);"/>
-                    <use href="#mini-flower" x="-45" y="0" class="mini-bloom" style="animation-delay: 2.3s; transform: scale(1.5);"/>
-                    <use href="#mini-flower" x="45" y="0" class="mini-bloom" style="animation-delay: 2.4s; transform: scale(1.5);"/>
-                    <use href="#mini-flower" x="-20" y="45" class="mini-bloom" style="animation-delay: 2.5s; transform: scale(1.4);"/>
-                    <use href="#mini-flower" x="20" y="45" class="mini-bloom" style="animation-delay: 2.6s; transform: scale(1.4);"/>
-                    <use href="#mini-flower" x="-55" y="-25" class="mini-bloom" style="animation-delay: 2.7s; transform: scale(1.3);"/>
-                    <use href="#mini-flower" x="55" y="-25" class="mini-bloom" style="animation-delay: 2.8s; transform: scale(1.3);"/>
-                    <use href="#mini-flower" x="0" y="40" class="mini-bloom" style="animation-delay: 2.9s; transform: scale(1.6);"/>
-                    <use href="#mini-flower" x="-40" y="-40" class="mini-bloom" style="animation-delay: 3.0s; transform: scale(1.4);"/>
-                    <use href="#mini-flower" x="40" y="-40" class="mini-bloom" style="animation-delay: 3.1s; transform: scale(1.4);"/>
+                <g transform="translate(380, 300) scale(1.15)">
+                    <use href="#lily-petal" class="petal-anim" style="--r: 30deg; animation-delay: 1.8s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: -40deg; animation-delay: 2.0s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: 80deg; animation-delay: 2.2s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: -90deg; animation-delay: 2.4s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: 140deg; animation-delay: 2.6s;"/>
+                    <use href="#lily-petal" class="petal-anim" style="--r: -150deg; animation-delay: 2.8s;"/>
+                    <!-- Pistilos -->
+                    <circle cx="-15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 3.1s;"/>
+                    <circle cx="15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 3.1s;"/>
+                </g>
+
+                <!-- Hortensia Central Súper Voluptuosa y Densa -->
+                <g transform="translate(250, 220)">
+                    <!-- Base oscura para dar profundidad -->
+                    <circle cx="0" cy="0" r="75" fill="#1e3a8a" class="bloom-anim" style="animation-delay: 1.2s; opacity: 0.8;"/>
+                    
+                    <!-- Capa 1: Fondo -->
+                    <g transform="translate(-40, -40) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.4s;"/></g>
+                    <g transform="translate(40, -40) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.5s;"/></g>
+                    <g transform="translate(-50, 20) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.6s;"/></g>
+                    <g transform="translate(50, 20) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.7s;"/></g>
+                    <g transform="translate(0, -65) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.8s;"/></g>
+                    <g transform="translate(0, 55) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.9s;"/></g>
+                    
+                    <!-- Capa 2: Media -->
+                    <g transform="translate(-30, -10) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.0s;"/></g>
+                    <g transform="translate(30, -10) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.1s;"/></g>
+                    <g transform="translate(-20, 40) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.2s;"/></g>
+                    <g transform="translate(20, 40) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.3s;"/></g>
+                    <g transform="translate(-25, -55) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.4s;"/></g>
+                    <g transform="translate(25, -55) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.5s;"/></g>
+
+                    <!-- Capa 3: Frente y Superposición -->
+                    <g transform="translate(0, -25) scale(2.0)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.6s;"/></g>
+                    <g transform="translate(0, 15) scale(2.0)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.7s;"/></g>
+                    <g transform="translate(-25, 15) scale(1.9)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.8s;"/></g>
+                    <g transform="translate(25, 15) scale(1.9)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.9s;"/></g>
+                    <g transform="translate(0, 0) scale(2.2)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 3.1s;"/></g>
                 </g>
             </svg>
         </div>
         
-        <button class="btn" onclick="mostrarCarta()">Ver carta 💌</button>
+        <button class="btn" onclick="mostrarCarta()">Abrir Carta 💌</button>
     </div>
 
     <!-- PANTALLA 2: La Carta -->
@@ -295,16 +327,13 @@
 
     <script>
         function mostrarCarta() {
-            // Oculta pantalla 1 con animación
             document.getElementById('screen1').classList.add('hide');
-            
-            // Muestra pantalla 2 después de la transición
             setTimeout(() => {
                 document.getElementById('screen2').classList.add('show');
             }, 800);
         }
 
-        // Efecto de paralaje con el mouse
+        // Efecto Paralaje
         document.addEventListener('mousemove', (e) => {
             const starsContainer = document.querySelector('.stars-container');
             const bouquet = document.querySelector('.bouquet-wrapper');
@@ -316,7 +345,7 @@
             starsContainer.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
             
             if (bouquet) {
-                bouquet.style.transform = `translate(${x * 50}px, ${y * 50}px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+                bouquet.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
             }
             
             if (card && document.getElementById('screen2').classList.contains('show')) {
