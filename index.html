@@ -39,7 +39,7 @@
         .stars.layer2 { background-size: 350px 350px; animation-duration: 10s; animation-direction: reverse; opacity: 0.5; }
         @keyframes twinkle { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 100px); } }
 
-        /* === ENCABEZADO (AHORA SE OCULTA CON LA PANTALLA 1) === */
+        /* === ENCABEZADO DENTRO DE PANTALLA 1 === */
         .header-banner {
             width: 100%;
             height: var(--header-height);
@@ -48,7 +48,7 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
             text-align: center; padding: 0 15px; box-sizing: border-box;
-            margin-bottom: auto; /* Empuja el ramo hacia el centro */
+            margin-bottom: auto; /* Mantiene el ramo centrado en la pantalla */
         }
         .birthday-title {
             font-size: 2rem; font-weight: bold; color: var(--gold-text);
@@ -63,11 +63,10 @@
             position: absolute; 
             top: 0; left: 0; width: 100%; height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 1; transition: opacity 1s ease, transform 1s ease;
+            z-index: 1; transition: opacity 0.8s ease, transform 0.8s ease;
             box-sizing: border-box;
         }
         
-        /* Ajuste específico para Screen 1 debido al banner superior */
         #screen1 {
             justify-content: flex-start; 
             padding-bottom: 3vh;
@@ -89,7 +88,7 @@
             min-height: 280px;
             transform-style: preserve-3d;
             animation: floatBouquet 6s ease-in-out infinite alternate;
-            margin-top: auto; /* Centra dinámicamente entre el banner y el botón */
+            margin-top: auto; 
             margin-bottom: auto;
             display: flex; justify-content: center; align-items: center;
         }
@@ -121,7 +120,7 @@
             cursor: pointer; font-weight: bold; z-index: 2;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
             transition: all 0.3s ease; animation: pulseBtn 2s infinite alternate;
-            margin-bottom: auto; /* Empuja hacia arriba para equilibrar */
+            margin-bottom: auto; /* Equilibra el espacio inferior */
         }
         @keyframes pulseBtn { 0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 100% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.9); } }
         .btn:hover { transform: translateY(-5px) scale(1.05); }
@@ -132,7 +131,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 40px; border-radius: 25px;
             max-width: 650px; width: 85%; 
-            max-height: 85vh; /* Ahora la carta puede usar casi toda la pantalla */
+            max-height: 85vh; /* La carta usa casi toda la pantalla */
             overflow-y: auto;
             text-align: left; line-height: 1.7; font-size: 1.1rem;
             box-shadow: 0 25px 60px rgba(0,0,0,0.8);
@@ -337,9 +336,20 @@
     </div>
 
     <script>
+        // === FUNCIÓN ACTUALIZADA CON DISPLAY NONE ===
         function mostrarCarta() {
-            document.getElementById('screen1').classList.add('hide');
-            setTimeout(() => { document.getElementById('screen2').classList.add('show'); }, 800);
+            const screen1 = document.getElementById('screen1');
+            const screen2 = document.getElementById('screen2');
+            
+            // Oculta el contenedor 1 (Ramo + Banner)
+            screen1.classList.add('hide');
+            
+            setTimeout(() => { 
+                // Elimina físicamente el contenedor 1 de la pantalla para evitar que se superponga
+                screen1.style.display = 'none'; 
+                // Muestra la carta
+                screen2.classList.add('show'); 
+            }, 800); // 800ms coincide con la animación CSS
         }
 
         function moveElements(clientX, clientY) {
