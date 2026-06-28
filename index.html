@@ -10,6 +10,7 @@
             --dark-night: #040714;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --gold-text: #fef08a;
+            --header-height: 140px; /* Altura para el encabezado */
         }
 
         body {
@@ -39,9 +40,28 @@
         .stars.layer2 { background-size: 350px 350px; animation-duration: 10s; animation-direction: reverse; opacity: 0.5; }
         @keyframes twinkle { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 100px); } }
 
+        /* === ENCABEZADO FIJO === */
+        .header-banner {
+            position: fixed; top: 0; left: 0; width: 100%;
+            height: var(--header-height); z-index: 10;
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            text-align: center; padding: 0 20px; box-sizing: border-box;
+        }
+        .birthday-title {
+            font-size: 2.2rem; font-weight: bold; color: var(--gold-text);
+            margin: 0 0 10px 0; text-shadow: 0 0 15px rgba(254, 240, 138, 0.6);
+        }
+        .bouquet-desc {
+            font-size: 1.2rem; color: #a1a1aa; margin: 0; text-shadow: 0 0 5px rgba(226, 232, 240, 0.3);
+        }
+
         /* === CONTENEDORES === */
         #screen1, #screen2 {
-            position: absolute; width: 100%; height: 100%;
+            position: absolute; width: 100%; 
+            top: var(--header-height); height: calc(100% - var(--header-height));
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1; transition: opacity 1s ease, transform 1s ease;
         }
@@ -51,17 +71,13 @@
 
         /* === CONTENEDOR DEL RAMO === */
         .bouquet-wrapper {
-            /* Responsivo: Se adapta al ancho, máximo 600px, mantiene proporción */
-            width: 90vw; 
-            max-width: 600px;
+            width: 90vw; max-width: 600px;
             aspect-ratio: 6 / 7;
             transform-style: preserve-3d;
             animation: floatBouquet 6s ease-in-out infinite alternate;
         }
         .bouquet-wrapper svg {
-            width: 100%; 
-            height: 100%; 
-            display: block;
+            width: 100%; height: 100%; display: block;
         }
         @keyframes floatBouquet {
             0% { transform: translateY(5px) rotateX(2deg); }
@@ -125,6 +141,9 @@
 
         /* === AJUSTES PARA CELULARES (DISEÑO RESPONSIVO) === */
         @media (max-width: 768px) {
+            :root { --header-height: 110px; }
+            .birthday-title { font-size: 1.6rem; }
+            .bouquet-desc { font-size: 1rem; }
             .btn {
                 padding: 15px 35px;
                 font-size: 1.1rem;
@@ -155,6 +174,11 @@
         <div class="stars"></div>
         <div class="stars layer2"></div>
     </div>
+
+    <header class="header-banner">
+        <h1 class="birthday-title">🎉 ¡Feliz Cumpleaños, Celeste🩵! 🎉</h1>
+        <p class="bouquet-desc">💐 Un ramo virtual para ti. 💐</p>
+    </header>
 
     <div id="screen1">
         <div class="bouquet-wrapper">
