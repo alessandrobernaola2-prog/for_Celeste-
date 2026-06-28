@@ -1,0 +1,96 @@
+:root {
+    --primary-blue: #4A90E2;
+    --light-blue: #EBF4FA;
+    --dark-text: #2C3E50;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #a8caba 0%, #5d9ec8 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--dark-text);
+}
+
+.background-decor {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: radial-gradient(circle at 15% 50%, rgba(255,255,255,0.2), transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(255,255,255,0.2), transparent 25%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    text-align: center;
+}
+
+h1 {
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    margin-top: 0;
+    font-weight: 700;
+}
+
+.message p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.flowers {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.flower-img {
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.flower-img:hover {
+    transform: translateY(-5px);
+}
+
+.flower-label {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.8);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+footer {
+    margin-top: 30px;
+    font-weight: 600;
+    color: var(--primary-blue);
+}
