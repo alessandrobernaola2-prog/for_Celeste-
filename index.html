@@ -10,7 +10,7 @@
             --dark-night: #040714;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --gold-text: #fef08a;
-            --header-height: 120px; /* Altura optimizada para el encabezado */
+            --header-height: 120px;
         }
 
         body {
@@ -39,15 +39,16 @@
         .stars.layer2 { background-size: 350px 350px; animation-duration: 10s; animation-direction: reverse; opacity: 0.5; }
         @keyframes twinkle { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 100px); } }
 
-        /* === ENCABEZADO FIJO === */
+        /* === ENCABEZADO (AHORA SE OCULTA CON LA PANTALLA 1) === */
         .header-banner {
-            position: fixed; top: 0; left: 0; width: 100%;
-            height: var(--header-height); z-index: 10;
+            width: 100%;
+            height: var(--header-height);
             background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
             text-align: center; padding: 0 15px; box-sizing: border-box;
+            margin-bottom: auto; /* Empuja el ramo hacia el centro */
         }
         .birthday-title {
             font-size: 2rem; font-weight: bold; color: var(--gold-text);
@@ -60,33 +61,40 @@
         /* === CONTENEDORES PRINCIPALES === */
         #screen1, #screen2 {
             position: absolute; 
-            top: var(--header-height); /* Empiezan justo debajo del encabezado */
-            left: 0; width: 100%; 
-            height: calc(100vh - var(--header-height)); /* Toman solo el espacio restante */
+            top: 0; left: 0; width: 100%; height: 100vh;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 1; transition: opacity 1s ease, transform 1s ease;
-            box-sizing: border-box; padding-bottom: 20px;
+            box-sizing: border-box;
         }
-        #screen2 { opacity: 0; pointer-events: none; transform: scale(0.9) rotateY(-15deg); }
+        
+        /* Ajuste específico para Screen 1 debido al banner superior */
+        #screen1 {
+            justify-content: flex-start; 
+            padding-bottom: 3vh;
+        }
+
+        #screen2 { 
+            opacity: 0; pointer-events: none; transform: scale(0.9) rotateY(-15deg);
+            padding: 20px;
+        }
         .hide { opacity: 0 !important; transform: scale(1.1) rotateY(15deg) !important; pointer-events: none; }
         .show { opacity: 1 !important; transform: scale(1) rotateY(0deg) !important; pointer-events: auto !important; }
 
-        /* === CONTENEDOR DEL RAMO (CORREGIDO PARA NO CORTARSE) === */
+        /* === CONTENEDOR DEL RAMO === */
         .bouquet-wrapper {
             width: 90vw; 
             max-width: 500px;
-            /* La altura ahora depende del tamaño de la pantalla, evitando que desborde hacia arriba */
-            height: 55vh; 
-            max-height: 550px; 
-            min-height: 300px;
+            height: 52vh; 
+            max-height: 500px; 
+            min-height: 280px;
             transform-style: preserve-3d;
             animation: floatBouquet 6s ease-in-out infinite alternate;
-            margin-bottom: 15px;
+            margin-top: auto; /* Centra dinámicamente entre el banner y el botón */
+            margin-bottom: auto;
             display: flex; justify-content: center; align-items: center;
         }
         .bouquet-wrapper svg {
             width: 100%; height: 100%; 
-            /* Esto obliga al SVG a no deformarse y entrar completo en el contenedor */
             object-fit: contain; 
             display: block;
         }
@@ -113,6 +121,7 @@
             cursor: pointer; font-weight: bold; z-index: 2;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
             transition: all 0.3s ease; animation: pulseBtn 2s infinite alternate;
+            margin-bottom: auto; /* Empuja hacia arriba para equilibrar */
         }
         @keyframes pulseBtn { 0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 100% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.9); } }
         .btn:hover { transform: translateY(-5px) scale(1.05); }
@@ -123,7 +132,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 40px; border-radius: 25px;
             max-width: 650px; width: 85%; 
-            max-height: calc(100vh - var(--header-height) - 40px); /* Evita que la carta se corte */
+            max-height: 85vh; /* Ahora la carta puede usar casi toda la pantalla */
             overflow-y: auto;
             text-align: left; line-height: 1.7; font-size: 1.1rem;
             box-shadow: 0 25px 60px rgba(0,0,0,0.8);
@@ -135,21 +144,21 @@
         .letter-card::-webkit-scrollbar-track { background: transparent; }
         .letter-card::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.6); border-radius: 10px; }
 
-        /* === DISEÑO RESPONSIVO (MÓVILES) === */
+        /* === DISEÑO RESPONSIVO === */
         @media (max-width: 768px) {
             :root { --header-height: 100px; }
             .birthday-title { font-size: 1.5rem; }
             .bouquet-desc { font-size: 0.95rem; }
             .btn { padding: 14px 30px; font-size: 1.1rem; }
-            .letter-card { padding: 25px 20px; font-size: 1rem; line-height: 1.6; }
-            .bouquet-wrapper { height: 60vh; }
+            .letter-card { padding: 25px 20px; font-size: 1rem; line-height: 1.6; max-height: 80vh; }
+            .bouquet-wrapper { height: 50vh; }
         }
-        /* Para pantallas acostadas (landscape) o monitores muy anchos pero bajitos */
+
         @media (max-height: 600px) {
             :root { --header-height: 80px; }
             .birthday-title { font-size: 1.2rem; }
             .bouquet-desc { font-size: 0.8rem; }
-            .bouquet-wrapper { height: 65vh; margin-bottom: 5px; }
+            .bouquet-wrapper { height: 55vh; }
             .btn { padding: 10px 25px; font-size: 1rem; }
         }
     </style>
@@ -161,12 +170,12 @@
         <div class="stars layer2"></div>
     </div>
 
-    <header class="header-banner">
-        <h1 class="birthday-title">🎉 ¡Feliz Cumpleaños, Celeste🩵! 🎉</h1>
-        <p class="bouquet-desc">💐 Un ramo virtual para ti. 💐</p>
-    </header>
-
     <div id="screen1">
+        <header class="header-banner">
+            <h1 class="birthday-title">🎉 ¡Feliz Cumpleaños, Celeste🩵! 🎉</h1>
+            <p class="bouquet-desc">💐 Un ramo virtual para ti. 💐</p>
+        </header>
+
         <div class="bouquet-wrapper">
             <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                 <defs>
@@ -333,14 +342,15 @@
             setTimeout(() => { document.getElementById('screen2').classList.add('show'); }, 800);
         }
 
-        // Se añadió soporte para pantallas táctiles en el movimiento del fondo
         function moveElements(clientX, clientY) {
             const x = clientX / window.innerWidth - 0.5;
             const y = clientY / window.innerHeight - 0.5;
             document.querySelector('.stars-container').style.transform = `translate(${x * 20}px, ${y * 20}px)`;
             
             const bouquet = document.querySelector('.bouquet-wrapper');
-            if (bouquet) bouquet.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
+            if (bouquet && !document.getElementById('screen1').classList.contains('hide')) {
+                bouquet.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
+            }
             
             const card = document.querySelector('.letter-card');
             if (card && document.getElementById('screen2').classList.contains('show')) {
@@ -352,7 +362,6 @@
             moveElements(e.clientX, e.clientY);
         });
 
-        // Evento touch para celulares
         document.addEventListener('touchmove', (e) => {
             if(e.touches.length > 0) {
                 moveElements(e.touches[0].clientX, e.touches[0].clientY);
