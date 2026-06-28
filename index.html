@@ -3,182 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Celeste, con cariño y matemáticas 💙</title>
+    <title>Para Celeste, con cariño 💙</title>
     <style>
         /* === ESTILOS GENERALES === */
         :root {
-            --dark-night: #060a1f;
+            --dark-night: #040714;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --gold-text: #fef08a;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background: var(--dark-night);
             color: #e2e8f0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            perspective: 1000px;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden; perspective: 1200px;
         }
 
-        /* === FONDO DE ESTRELLAS Y ORBES === */
+        /* === FONDO ESTELAR === */
         .stars-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none;
-            background: radial-gradient(circle at center, #0f2050, var(--dark-night) 80%);
+            background: radial-gradient(circle at center, #0f172a, var(--dark-night) 80%);
         }
         .stars {
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: 
                 radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
                 radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            background-size: 200px 200px;
-            animation: twinkle 6s infinite linear;
+            background-repeat: repeat; background-size: 250px 250px;
+            animation: twinkle 7s infinite linear;
         }
-        .stars.layer2 { background-size: 300px 300px; animation-duration: 9s; animation-direction: reverse; opacity: 0.6; }
-        
+        .stars.layer2 { background-size: 350px 350px; animation-duration: 10s; animation-direction: reverse; opacity: 0.5; }
         @keyframes twinkle { 0% { transform: translate(0, 0); } 100% { transform: translate(100px, 100px); } }
-
-        .floating-orb {
-            position: absolute;
-            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.3), transparent 70%);
-            border-radius: 50%;
-            filter: blur(15px);
-            animation: floatOrb 8s infinite ease-in-out alternate;
-            pointer-events: none;
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translateY(0) scale(1); opacity: 0.3; }
-            100% { transform: translateY(-30px) scale(1.2); opacity: 0.6; }
-        }
 
         /* === CONTENEDORES === */
         #screen1, #screen2 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1;
-            transition: opacity 1s ease, transform 1s ease;
+            position: absolute; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1; transition: opacity 1s ease, transform 1s ease;
         }
-
         #screen2 { opacity: 0; pointer-events: none; transform: scale(0.9) rotateY(-15deg); }
         .hide { opacity: 0 !important; transform: scale(1.1) rotateY(15deg) !important; pointer-events: none; }
         .show { opacity: 1 !important; transform: scale(1) rotateY(0deg) !important; pointer-events: auto !important; }
 
-        /* === RAMO DE FLORES === */
+        /* === CONTENEDOR DEL RAMO === */
         .bouquet-wrapper {
-            width: 500px;
-            height: 600px;
+            width: 600px; height: 700px; /* Más grande para el ramo voluptuoso */
             transform-style: preserve-3d;
-            animation: floatBouquet 5s ease-in-out infinite alternate;
+            animation: floatBouquet 6s ease-in-out infinite alternate;
         }
-        
         @keyframes floatBouquet {
             0% { transform: translateY(5px) rotateX(2deg); }
             100% { transform: translateY(-15px) rotateX(-2deg); }
         }
 
-        /* Animaciones SVG Corregidas */
-        .stem-anim {
-            stroke-dasharray: 600;
-            stroke-dashoffset: 600;
-            animation: drawStem 2s ease-out forwards;
-        }
+        /* === ANIMACIONES SVG SEGURAS (CROSS-BROWSER) === */
+        .stem-anim { stroke-dasharray: 800; stroke-dashoffset: 800; animation: drawStem 2.5s ease-out forwards; }
         @keyframes drawStem { to { stroke-dashoffset: 0; } }
 
-        /* Fix para navegadores: transform-box: fill-box es la clave */
-        .leaf-anim {
+        .leaf-anim, .petal-anim, .bloom-anim {
             opacity: 0;
             transform-box: fill-box;
             -webkit-transform-box: fill-box;
-            transform-origin: bottom center;
-            animation: growLeaf 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        @keyframes growLeaf {
-            0% { opacity: 0; transform: scale(0) rotate(0deg); }
-            100% { opacity: 1; transform: scale(1) rotate(var(--r)); }
-        }
-
-        .petal-anim {
-            opacity: 0;
-            transform-box: fill-box;
-            -webkit-transform-box: fill-box;
+        .leaf-anim, .petal-anim {
             transform-origin: bottom center;
             animation: growPetal 2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .bloom-anim {
+            transform-origin: center;
+            animation: popIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         @keyframes growPetal {
             0% { opacity: 0; transform: scale(0) rotate(0deg); }
             100% { opacity: 1; transform: scale(1) rotate(var(--r)); }
         }
-
-        .bloom-anim {
-            opacity: 0;
-            transform-box: fill-box;
-            -webkit-transform-box: fill-box;
-            transform-origin: center;
-            animation: popIn 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
         @keyframes popIn {
-            0% { opacity: 0; transform: scale(0) rotate(-60deg); }
+            0% { opacity: 0; transform: scale(0) rotate(-45deg); }
             100% { opacity: 1; transform: scale(1) rotate(0deg); }
         }
 
         /* === BOTÓN === */
         .btn {
-            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            padding: 18px 50px;
-            border-radius: 40px;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            transition: all 0.3s ease;
-            font-weight: bold;
-            margin-top: -20px;
-            z-index: 2;
-            animation: pulseBtn 2s infinite alternate;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white; border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 18px 50px; border-radius: 40px; font-size: 1.3rem;
+            cursor: pointer; font-weight: bold; margin-top: -30px; z-index: 2;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+            transition: all 0.3s ease; animation: pulseBtn 2s infinite alternate;
         }
-        @keyframes pulseBtn {
-            0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); }
-            100% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
-        }
+        @keyframes pulseBtn { 0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 100% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.9); } }
         .btn:hover { transform: translateY(-5px) scale(1.05); }
 
         /* === CARTA === */
         .letter-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            padding: 45px;
-            border-radius: 25px;
-            max-width: 650px;
-            width: 85%;
-            max-height: 80vh;
-            overflow-y: auto;
-            text-align: left;
-            line-height: 1.8;
-            font-size: 1.15rem;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px; border-radius: 25px;
+            max-width: 650px; width: 85%; max-height: 80vh; overflow-y: auto;
+            text-align: left; line-height: 1.8; font-size: 1.15rem;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            border-top: 4px solid #3b82f6;
         }
         .letter-card p { margin-bottom: 20px; text-align: justify; color: #f8fafc; }
         .letter-card p:last-child { margin-bottom: 0; }
-        
         .letter-card::-webkit-scrollbar { width: 8px; }
         .letter-card::-webkit-scrollbar-track { background: transparent; }
         .letter-card::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.6); border-radius: 10px; }
@@ -186,131 +117,158 @@
 </head>
 <body>
 
-    <!-- Fondo Mágico -->
     <div class="stars-container">
         <div class="stars"></div>
         <div class="stars layer2"></div>
-        <div class="floating-orb" style="width: 150px; height: 150px; top: 20%; left: 15%;"></div>
-        <div class="floating-orb" style="width: 200px; height: 200px; top: 60%; left: 75%; animation-delay: -2s;"></div>
     </div>
 
-    <!-- PANTALLA 1: El Ramo Voluptuoso -->
     <div id="screen1">
         <div class="bouquet-wrapper">
-            <svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <linearGradient id="stemColor" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#14532d"/>
-                        <stop offset="100%" stop-color="#22c55e"/>
-                    </linearGradient>
-                    <linearGradient id="leafColor" x1="0%" y1="100%" x2="0%" y2="0%">
-                        <stop offset="0%" stop-color="#064e3b"/>
-                        <stop offset="100%" stop-color="#16a34a"/>
-                    </linearGradient>
-                    <radialGradient id="lilyColor" cx="50%" cy="80%" r="80%">
-                        <stop offset="0%" stop-color="#1e3a8a"/>
-                        <stop offset="50%" stop-color="#3b82f6"/>
-                        <stop offset="100%" stop-color="#bfdbfe"/>
-                    </radialGradient>
-                    <radialGradient id="hortensiaColor" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stop-color="#60a5fa"/>
-                        <stop offset="100%" stop-color="#1d4ed8"/>
-                    </radialGradient>
+                    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#064e3b"/><stop offset="100%" stop-color="#16a34a"/></linearGradient>
+                    <linearGradient id="leafGrad" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#022c22"/><stop offset="100%" stop-color="#15803d"/></linearGradient>
                     
-                    <g id="mini-flower">
-                        <circle cx="0" cy="-7" r="7" fill="url(#hortensiaColor)" />
-                        <circle cx="0" cy="7" r="7" fill="url(#hortensiaColor)" />
-                        <circle cx="-7" cy="0" r="7" fill="url(#hortensiaColor)" />
-                        <circle cx="7" cy="0" r="7" fill="url(#hortensiaColor)" />
-                        <circle cx="0" cy="0" r="4" fill="#eff6ff" />
-                    </g>
+                    <radialGradient id="lilyBlue" cx="50%" cy="80%" r="80%"><stop offset="0%" stop-color="#1e3a8a"/><stop offset="50%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#bfdbfe"/></radialGradient>
+                    <radialGradient id="lilyWhite" cx="50%" cy="80%" r="80%"><stop offset="0%" stop-color="#d8b4fe"/><stop offset="40%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#ffffff"/></radialGradient>
+                    
+                    <radialGradient id="hortBlue" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#1d4ed8"/></radialGradient>
+                    <radialGradient id="hortPurple" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#d8b4fe"/><stop offset="100%" stop-color="#6b21a8"/></radialGradient>
                     
                     <g id="lily-petal">
-                        <path d="M0,0 C-25,-35 -35,-70 0,-90 C35,-70 25,-35 0,0" fill="url(#lilyColor)" />
+                        <path d="M0,0 C-30,-40 -40,-80 0,-100 C40,-80 30,-40 0,0" />
+                        <path d="M0,0 L0,-90" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none"/> </g>
+                    
+                    <g id="mini-hort-blue">
+                        <circle cx="0" cy="-8" r="8" fill="url(#hortBlue)" /><circle cx="0" cy="8" r="8" fill="url(#hortBlue)" />
+                        <circle cx="-8" cy="0" r="8" fill="url(#hortBlue)" /><circle cx="8" cy="0" r="8" fill="url(#hortBlue)" />
+                        <circle cx="0" cy="0" r="3" fill="#eff6ff" />
+                    </g>
+                    
+                    <g id="mini-hort-purple">
+                        <circle cx="0" cy="-7" r="7" fill="url(#hortPurple)" /><circle cx="0" cy="7" r="7" fill="url(#hortPurple)" />
+                        <circle cx="-7" cy="0" r="7" fill="url(#hortPurple)" /><circle cx="7" cy="0" r="7" fill="url(#hortPurple)" />
+                        <circle cx="0" cy="0" r="3" fill="#fdf4ff" />
                     </g>
 
-                    <g id="leaf">
-                        <path d="M0,0 Q-40,-30 0,-90 Q40,-30 0,0" fill="url(#leafColor)" />
+                    <g id="filler-flower">
+                        <circle cx="0" cy="-4" r="4" fill="#ffffff" /><circle cx="0" cy="4" r="4" fill="#ffffff" />
+                        <circle cx="-4" cy="0" r="4" fill="#ffffff" /><circle cx="4" cy="0" r="4" fill="#ffffff" />
+                        <circle cx="0" cy="0" r="2" fill="#fef08a" />
                     </g>
+
+                    <g id="leaf"><path d="M0,0 C-30,-20 -50,-60 0,-100 C50,-60 30,-20 0,0" fill="url(#leafGrad)" /></g>
                 </defs>
 
-                <!-- Tallos principales (Dibujados dinámicamente) -->
-                <path d="M250,580 Q250,380 250,250" stroke="url(#stemColor)" stroke-width="10" fill="none" class="stem-anim"/>
-                <path d="M250,580 Q160,420 120,300" stroke="url(#stemColor)" stroke-width="8" fill="none" class="stem-anim" style="animation-delay: 0.2s;"/>
-                <path d="M250,580 Q340,420 380,300" stroke="url(#stemColor)" stroke-width="8" fill="none" class="stem-anim" style="animation-delay: 0.4s;"/>
+                <path d="M300,680 Q300,450 300,300" stroke="url(#stemGrad)" stroke-width="12" fill="none" class="stem-anim"/>
+                <path d="M300,680 Q200,500 150,350" stroke="url(#stemGrad)" stroke-width="9" fill="none" class="stem-anim" style="animation-delay: 0.1s;"/>
+                <path d="M300,680 Q400,500 450,350" stroke="url(#stemGrad)" stroke-width="9" fill="none" class="stem-anim" style="animation-delay: 0.2s;"/>
+                <path d="M300,680 Q250,450 200,200" stroke="url(#stemGrad)" stroke-width="7" fill="none" class="stem-anim" style="animation-delay: 0.3s;"/>
+                <path d="M300,680 Q350,450 400,200" stroke="url(#stemGrad)" stroke-width="7" fill="none" class="stem-anim" style="animation-delay: 0.4s;"/>
+                
+                <g transform="translate(300, 500)"><use href="#leaf" class="leaf-anim" style="--r: -60deg; animation-delay: 0.8s; transform: scale(1.5)"/></g>
+                <g transform="translate(300, 500)"><use href="#leaf" class="leaf-anim" style="--r: 60deg; animation-delay: 0.9s; transform: scale(1.5)"/></g>
+                <g transform="translate(230, 420)"><use href="#leaf" class="leaf-anim" style="--r: -80deg; animation-delay: 1.0s; transform: scale(1.2)"/></g>
+                <g transform="translate(370, 420)"><use href="#leaf" class="leaf-anim" style="--r: 80deg; animation-delay: 1.1s; transform: scale(1.2)"/></g>
 
-                <!-- Hojas para dar volumen -->
-                <g transform="translate(250, 400)">
-                    <use href="#leaf" class="leaf-anim" style="--r: -50deg; animation-delay: 1s;"/>
-                    <use href="#leaf" class="leaf-anim" style="--r: 50deg; animation-delay: 1.2s;"/>
-                </g>
-                <g transform="translate(180, 450)">
-                    <use href="#leaf" class="leaf-anim" style="--r: -70deg; animation-delay: 1.4s;"/>
-                </g>
-                <g transform="translate(320, 450)">
-                    <use href="#leaf" class="leaf-anim" style="--r: 70deg; animation-delay: 1.6s;"/>
-                </g>
-
-                <!-- Lirios (Izquierda y Derecha) -->
-                <g transform="translate(120, 300) scale(1.15)">
-                    <use href="#lily-petal" class="petal-anim" style="--r: -30deg; animation-delay: 1.5s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: 40deg; animation-delay: 1.7s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: -80deg; animation-delay: 1.9s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: 90deg; animation-delay: 2.1s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: -140deg; animation-delay: 2.3s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: 150deg; animation-delay: 2.5s;"/>
-                    <!-- Pistilos -->
-                    <circle cx="-15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.8s;"/>
-                    <circle cx="15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.8s;"/>
+                <g transform="translate(180, 260)">
+                    <circle cx="0" cy="0" r="60" fill="#4c1d95" class="bloom-anim" style="animation-delay: 1.2s; opacity: 0.9;"/>
+                    <g transform="translate(-25,-25) scale(1.3)"><use href="#mini-hort-purple" class="bloom-anim" style="animation-delay: 1.3s;"/></g>
+                    <g transform="translate(25,-25) scale(1.4)"><use href="#mini-hort-purple" class="bloom-anim" style="animation-delay: 1.4s;"/></g>
+                    <g transform="translate(-30,20) scale(1.3)"><use href="#mini-hort-purple" class="bloom-anim" style="animation-delay: 1.5s;"/></g>
+                    <g transform="translate(30,20) scale(1.4)"><use href="#mini-hort-purple" class="bloom-anim" style="animation-delay: 1.6s;"/></g>
+                    <g transform="translate(0,0) scale(1.6)"><use href="#mini-hort-purple" class="bloom-anim" style="animation-delay: 1.7s;"/></g>
                 </g>
 
-                <g transform="translate(380, 300) scale(1.15)">
-                    <use href="#lily-petal" class="petal-anim" style="--r: 30deg; animation-delay: 1.8s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: -40deg; animation-delay: 2.0s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: 80deg; animation-delay: 2.2s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: -90deg; animation-delay: 2.4s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: 140deg; animation-delay: 2.6s;"/>
-                    <use href="#lily-petal" class="petal-anim" style="--r: -150deg; animation-delay: 2.8s;"/>
-                    <!-- Pistilos -->
-                    <circle cx="-15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 3.1s;"/>
-                    <circle cx="15" cy="-55" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 3.1s;"/>
+                <g transform="translate(420, 260)">
+                    <circle cx="0" cy="0" r="60" fill="#1e3a8a" class="bloom-anim" style="animation-delay: 1.4s; opacity: 0.9;"/>
+                    <g transform="translate(-20,-30) scale(1.4)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 1.5s;"/></g>
+                    <g transform="translate(25,-20) scale(1.3)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 1.6s;"/></g>
+                    <g transform="translate(-25,25) scale(1.3)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 1.7s;"/></g>
+                    <g transform="translate(25,25) scale(1.4)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 1.8s;"/></g>
+                    <g transform="translate(0,0) scale(1.6)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 1.9s;"/></g>
                 </g>
 
-                <!-- Hortensia Central Súper Voluptuosa y Densa -->
-                <g transform="translate(250, 220)">
-                    <!-- Base oscura para dar profundidad -->
-                    <circle cx="0" cy="0" r="75" fill="#1e3a8a" class="bloom-anim" style="animation-delay: 1.2s; opacity: 0.8;"/>
+                <g transform="translate(150, 360) scale(1.2)">
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: -40deg; animation-delay: 1.8s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: 30deg; animation-delay: 1.9s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: -100deg; animation-delay: 2.0s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: 90deg; animation-delay: 2.1s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: -150deg; animation-delay: 2.2s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: 150deg; animation-delay: 2.3s;"/>
+                    <path d="M0,0 Q-15,-40 -20,-60" stroke="#fef08a" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 2.6s;"/>
+                    <path d="M0,0 Q15,-40 20,-60" stroke="#fef08a" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 2.6s;"/>
+                    <path d="M0,0 Q0,-45 0,-65" stroke="#fef08a" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 2.6s;"/>
+                    <circle cx="-20" cy="-60" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.6s;"/>
+                    <circle cx="20" cy="-60" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.6s;"/>
+                    <circle cx="0" cy="-65" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.6s;"/>
+                </g>
+
+                <g transform="translate(450, 360) scale(1.2)">
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: 40deg; animation-delay: 2.1s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: -30deg; animation-delay: 2.2s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: 100deg; animation-delay: 2.3s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: -90deg; animation-delay: 2.4s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: 150deg; animation-delay: 2.5s;"/>
+                    <use href="#lily-petal" fill="url(#lilyBlue)" class="petal-anim" style="--r: -150deg; animation-delay: 2.6s;"/>
+                    <path d="M0,0 Q-15,-40 -20,-60" stroke="#fef08a" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 2.9s;"/>
+                    <path d="M0,0 Q15,-40 20,-60" stroke="#fef08a" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 2.9s;"/>
+                    <path d="M0,0 Q0,-45 0,-65" stroke="#fef08a" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 2.9s;"/>
+                    <circle cx="-20" cy="-60" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.9s;"/>
+                    <circle cx="20" cy="-60" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.9s;"/>
+                    <circle cx="0" cy="-65" r="4" fill="#ca8a04" class="bloom-anim" style="animation-delay: 2.9s;"/>
+                </g>
+
+                <g transform="translate(300, 160) scale(1.1)">
+                    <use href="#lily-petal" fill="url(#lilyWhite)" class="petal-anim" style="--r: 0deg; animation-delay: 2.5s;"/>
+                    <use href="#lily-petal" fill="url(#lilyWhite)" class="petal-anim" style="--r: -60deg; animation-delay: 2.6s;"/>
+                    <use href="#lily-petal" fill="url(#lilyWhite)" class="petal-anim" style="--r: 60deg; animation-delay: 2.7s;"/>
+                    <use href="#lily-petal" fill="url(#lilyWhite)" class="petal-anim" style="--r: -120deg; animation-delay: 2.8s;"/>
+                    <use href="#lily-petal" fill="url(#lilyWhite)" class="petal-anim" style="--r: 120deg; animation-delay: 2.9s;"/>
+                    <use href="#lily-petal" fill="url(#lilyWhite)" class="petal-anim" style="--r: 180deg; animation-delay: 3.0s;"/>
+                    <path d="M0,0 Q-15,-30 -25,-45" stroke="#fbbf24" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 3.3s;"/>
+                    <path d="M0,0 Q15,-30 25,-45" stroke="#fbbf24" stroke-width="2" fill="none" class="bloom-anim" style="animation-delay: 3.3s;"/>
+                    <circle cx="-25" cy="-45" r="3" fill="#b45309" class="bloom-anim" style="animation-delay: 3.3s;"/>
+                    <circle cx="25" cy="-45" r="3" fill="#b45309" class="bloom-anim" style="animation-delay: 3.3s;"/>
+                </g>
+
+                <g transform="translate(300, 280)">
+                    <circle cx="0" cy="0" r="90" fill="#1e40af" class="bloom-anim" style="animation-delay: 2.2s; opacity: 0.95; box-shadow: 0 0 20px black;"/>
                     
-                    <!-- Capa 1: Fondo -->
-                    <g transform="translate(-40, -40) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.4s;"/></g>
-                    <g transform="translate(40, -40) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.5s;"/></g>
-                    <g transform="translate(-50, 20) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.6s;"/></g>
-                    <g transform="translate(50, 20) scale(1.6)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.7s;"/></g>
-                    <g transform="translate(0, -65) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.8s;"/></g>
-                    <g transform="translate(0, 55) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 1.9s;"/></g>
-                    
-                    <!-- Capa 2: Media -->
-                    <g transform="translate(-30, -10) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.0s;"/></g>
-                    <g transform="translate(30, -10) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.1s;"/></g>
-                    <g transform="translate(-20, 40) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.2s;"/></g>
-                    <g transform="translate(20, 40) scale(1.8)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.3s;"/></g>
-                    <g transform="translate(-25, -55) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.4s;"/></g>
-                    <g transform="translate(25, -55) scale(1.7)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.5s;"/></g>
+                    <g transform="translate(-50, -60) scale(1.6)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 2.4s;"/></g>
+                    <g transform="translate(50, -60) scale(1.6)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 2.5s;"/></g>
+                    <g transform="translate(-70, 0) scale(1.7)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 2.6s;"/></g>
+                    <g transform="translate(70, 0) scale(1.7)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 2.7s;"/></g>
+                    <g transform="translate(-50, 60) scale(1.6)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 2.8s;"/></g>
+                    <g transform="translate(50, 60) scale(1.6)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 2.9s;"/></g>
 
-                    <!-- Capa 3: Frente y Superposición -->
-                    <g transform="translate(0, -25) scale(2.0)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.6s;"/></g>
-                    <g transform="translate(0, 15) scale(2.0)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.7s;"/></g>
-                    <g transform="translate(-25, 15) scale(1.9)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.8s;"/></g>
-                    <g transform="translate(25, 15) scale(1.9)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 2.9s;"/></g>
-                    <g transform="translate(0, 0) scale(2.2)"><use href="#mini-flower" class="bloom-anim" style="animation-delay: 3.1s;"/></g>
+                    <g transform="translate(-30, -35) scale(1.9)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.0s;"/></g>
+                    <g transform="translate(30, -35) scale(1.9)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.1s;"/></g>
+                    <g transform="translate(-40, 30) scale(1.8)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.2s;"/></g>
+                    <g transform="translate(40, 30) scale(1.8)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.3s;"/></g>
+                    <g transform="translate(0, -70) scale(1.8)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.4s;"/></g>
+                    <g transform="translate(0, 65) scale(1.8)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.5s;"/></g>
+
+                    <g transform="translate(-15, 0) scale(2.2)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.6s;"/></g>
+                    <g transform="translate(20, 10) scale(2.1)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.7s;"/></g>
+                    <g transform="translate(0, -25) scale(2.3)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.8s;"/></g>
+                    <g transform="translate(0, 30) scale(2.2)"><use href="#mini-hort-blue" class="bloom-anim" style="animation-delay: 3.9s;"/></g>
                 </g>
+
+                <g transform="translate(210, 190) scale(1.5)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.0s;"/></g>
+                <g transform="translate(230, 170) scale(1.2)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.1s;"/></g>
+                <g transform="translate(390, 200) scale(1.5)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.2s;"/></g>
+                <g transform="translate(410, 180) scale(1.3)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.3s;"/></g>
+                <g transform="translate(140, 290) scale(1.6)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.4s;"/></g>
+                <g transform="translate(460, 290) scale(1.6)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.5s;"/></g>
+                <g transform="translate(280, 420) scale(1.5)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.6s;"/></g>
+                <g transform="translate(320, 410) scale(1.4)"><use href="#filler-flower" class="bloom-anim" style="animation-delay: 4.7s;"/></g>
             </svg>
         </div>
         
         <button class="btn" onclick="mostrarCarta()">Abrir Carta 💌</button>
     </div>
 
-    <!-- PANTALLA 2: La Carta -->
     <div id="screen2">
         <div class="letter-card">
             <p>Holaaaa, Celeste.</p>
@@ -328,28 +286,20 @@
     <script>
         function mostrarCarta() {
             document.getElementById('screen1').classList.add('hide');
-            setTimeout(() => {
-                document.getElementById('screen2').classList.add('show');
-            }, 800);
+            setTimeout(() => { document.getElementById('screen2').classList.add('show'); }, 800);
         }
 
-        // Efecto Paralaje
         document.addEventListener('mousemove', (e) => {
-            const starsContainer = document.querySelector('.stars-container');
-            const bouquet = document.querySelector('.bouquet-wrapper');
-            const card = document.querySelector('.letter-card');
-            
             const x = e.clientX / window.innerWidth - 0.5;
             const y = e.clientY / window.innerHeight - 0.5;
+            document.querySelector('.stars-container').style.transform = `translate(${x * 20}px, ${y * 20}px)`;
             
-            starsContainer.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+            const bouquet = document.querySelector('.bouquet-wrapper');
+            if (bouquet) bouquet.style.transform = `rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
             
-            if (bouquet) {
-                bouquet.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
-            }
-            
+            const card = document.querySelector('.letter-card');
             if (card && document.getElementById('screen2').classList.contains('show')) {
-                card.style.transform = `rotateY(${x * 5}deg) rotateX(${-y * 5}deg)`;
+                card.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
             }
         });
     </script>
