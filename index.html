@@ -51,9 +51,17 @@
 
         /* === CONTENEDOR DEL RAMO === */
         .bouquet-wrapper {
-            width: 600px; height: 700px; /* Más grande para el ramo voluptuoso */
+            /* Responsivo: Se adapta al ancho, máximo 600px, mantiene proporción */
+            width: 90vw; 
+            max-width: 600px;
+            aspect-ratio: 6 / 7;
             transform-style: preserve-3d;
             animation: floatBouquet 6s ease-in-out infinite alternate;
+        }
+        .bouquet-wrapper svg {
+            width: 100%; 
+            height: 100%; 
+            display: block;
         }
         @keyframes floatBouquet {
             0% { transform: translateY(5px) rotateX(2deg); }
@@ -91,9 +99,10 @@
             background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
             color: white; border: 2px solid rgba(255, 255, 255, 0.4);
             padding: 18px 50px; border-radius: 40px; font-size: 1.3rem;
-            cursor: pointer; font-weight: bold; margin-top: -30px; z-index: 2;
+            cursor: pointer; font-weight: bold; z-index: 2;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
             transition: all 0.3s ease; animation: pulseBtn 2s infinite alternate;
+            margin-top: 10px; /* Separación del ramo */
         }
         @keyframes pulseBtn { 0% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 100% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.9); } }
         .btn:hover { transform: translateY(-5px) scale(1.05); }
@@ -113,6 +122,31 @@
         .letter-card::-webkit-scrollbar { width: 8px; }
         .letter-card::-webkit-scrollbar-track { background: transparent; }
         .letter-card::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.6); border-radius: 10px; }
+
+        /* === AJUSTES PARA CELULARES (DISEÑO RESPONSIVO) === */
+        @media (max-width: 768px) {
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.1rem;
+                margin-top: 5px;
+            }
+            .letter-card {
+                padding: 30px 25px;
+                width: 90%;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            .bouquet-wrapper {
+                max-width: 95vw; /* Da un poco más de espacio a lo ancho en móviles */
+            }
+        }
+        /* Ajuste para pantallas pequeñas en altura (apaisado o celulares bajitos) */
+        @media (max-height: 700px) {
+            .bouquet-wrapper {
+                max-height: 60vh;
+                width: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -124,7 +158,7 @@
 
     <div id="screen1">
         <div class="bouquet-wrapper">
-            <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
                 <defs>
                     <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#064e3b"/><stop offset="100%" stop-color="#16a34a"/></linearGradient>
                     <linearGradient id="leafGrad" x1="0%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#022c22"/><stop offset="100%" stop-color="#15803d"/></linearGradient>
@@ -289,9 +323,10 @@
             setTimeout(() => { document.getElementById('screen2').classList.add('show'); }, 800);
         }
 
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX / window.innerWidth - 0.5;
-            const y = e.clientY / window.innerHeight - 0.5;
+        // Se añadió soporte para pantallas táctiles en el movimiento del fondo
+        function moveElements(clientX, clientY) {
+            const x = clientX / window.innerWidth - 0.5;
+            const y = clientY / window.innerHeight - 0.5;
             document.querySelector('.stars-container').style.transform = `translate(${x * 20}px, ${y * 20}px)`;
             
             const bouquet = document.querySelector('.bouquet-wrapper');
@@ -301,7 +336,18 @@
             if (card && document.getElementById('screen2').classList.contains('show')) {
                 card.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
             }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            moveElements(e.clientX, e.clientY);
         });
+
+        // Evento touch para celulares
+        document.addEventListener('touchmove', (e) => {
+            if(e.touches.length > 0) {
+                moveElements(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, {passive: true});
     </script>
 </body>
 </html>
