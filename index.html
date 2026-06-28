@@ -3,41 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Feliz Cumpleaños, Celeste!</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Para Celeste 💙</title>
+    <!-- Fuentes de Google para un toque elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --blue-light: #e0f0ff;
+            --blue-medium: #8cb8e6;
+            --blue-dark: #2c4f7c;
+            --text-color: #333;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lora', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow: hidden; /* Evita el scroll en la pantalla inicial */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Pantalla 1: El Ramo de Flores */
+        #intro-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: opacity 1s ease, transform 1s ease;
+            z-index: 10;
+        }
+
+        .flower-bouquet {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 15px 35px rgba(44, 79, 124, 0.3);
+            border: 8px solid white;
+            animation: float 4s ease-in-out infinite;
+            margin-bottom: 30px;
+        }
+
+        h1.greeting {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: var(--blue-dark);
+            margin: 0 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.5);
+        }
+
+        .btn-abrir {
+            background-color: var(--blue-dark);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-family: 'Lora', serif;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(44, 79, 124, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-abrir:hover {
+            background-color: #1a3556;
+            transform: scale(1.05);
+        }
+
+        /* Pantalla 2: La Carta */
+        #letter-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.5s ease;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .letter-paper {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 650px;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            position: relative;
+            transform: translateY(50px);
+            transition: transform 1.5s ease;
+            border-top: 10px solid var(--blue-medium);
+        }
+
+        /* Clase activa para mostrar la carta */
+        #letter-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #letter-screen.active .letter-paper {
+            transform: translateY(0);
+        }
+
+        /* Clase para ocultar el inicio */
+        #intro-screen.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+        .letter-content {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-color);
+            text-align: justify;
+        }
+
+        .letter-content h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: var(--blue-dark);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            text-align: right;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--blue-dark);
+            margin-top: 40px;
+        }
+
+        /* Animaciones */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(44, 79, 124, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(44, 79, 124, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(44, 79, 124, 0); }
+        }
+
+        /* Responsivo para celulares */
+        @media (max-width: 600px) {
+            .flower-bouquet { width: 220px; height: 220px; }
+            h1.greeting { font-size: 2.5rem; }
+            .letter-paper { padding: 30px 20px; margin-top: 50px; }
+            .letter-content { font-size: 1rem; }
+            #letter-screen { align-items: flex-start; } /* Para poder hacer scroll en celular */
+        }
+    </style>
 </head>
 <body>
-    <div class="background-decor"></div>
-    
-    <main class="card">
-        <header>
-            <h1>¡Feliz Cumpleaños, Celeste! 💙</h1>
-        </header>
-        
-        <section class="message">
-            <p>
-                Aún recuerdo que antes no hablábamos tanto, pero me alegra muchísimo que desde mayo todo haya cambiado. Te has convertido en alguien súper importante para mí.
-            </p>
-            <p>
-                Sé que sueles ser una chica muy directa, y aunque algunos puedan pensar que eres un poquito "fría", yo tengo la suerte de conocer ese gran corazón que tienes. Te admiro un montón, tal y como eres.
-            </p>
-            <p>
-                Quiero que sepas que te quiero bastante. Siempre vas a contar conmigo, ya sea para escucharte cuando lo necesites o para apoyarte en lo que sea. ¡Aquí estaré!
-            </p>
-        </section>
 
-        <section class="flowers">
-            <div class="flower-img" style="background-image: url('https://images.unsplash.com/photo-1549488344-c782069e2621?q=80&w=600&auto=format&fit=crop');">
-                <span class="flower-label">Hortensias para ti</span>
-            </div>
-            <div class="flower-img" style="background-image: url('https://images.unsplash.com/photo-1576409546059-e37452d5b62b?q=80&w=600&auto=format&fit=crop');">
-                <span class="flower-label">Lirios azules</span>
-            </div>
-        </section>
+    <!-- Pantalla Inicial: Flores y Botón -->
+    <div id="intro-screen">
+        <!-- Imagen de ramo de hortensias y lirios azules -->
+        <img src="http://googleusercontent.com/image_collection/image_retrieval/10836365151168366442_0" alt="Ramo de Hortensias y Lirios" class="flower-bouquet">
         
-        <footer>
-            <p>Con mucho cariño. ✨</p>
-        </footer>
-    </main>
+        <h1 class="greeting">¡Feliz Cumpleaños, Celeste!</h1>
+        <button class="btn-abrir" onclick="mostrarCarta()">Abrir tu sorpresa 💌</button>
+    </div>
+
+    <!-- Pantalla Secundaria: La Carta -->
+    <div id="letter-screen">
+        <div class="letter-paper">
+            <div class="letter-content">
+                <h2>Para ti, Celeste 💙</h2>
+                
+                <p>Mi querida amiga,</p>
+                
+                <p>Hoy es un día sumamente especial y no quería dejar pasar la oportunidad de hacer algo único para ti. Estaba pensando en lo curioso que es el tiempo y en cómo cambian las cosas. Aún recuerdo cuando apenas cruzábamos un par de palabras, pero me hace inmensamente feliz pensar que, desde aquel mes de mayo, todo dio un giro. Empezamos a hablar mucho más y, casi sin darme cuenta, te convertiste en una persona fundamental e insustituible en mis días.</p>
+                
+                <p>Sé que a los ojos de muchas personas puedes parecer una chica bastante directa, e incluso a veces un poquito "fría" o reservada. Pero yo me siento con la enorme suerte de haber traspasado esa coraza. Yo conozco el corazón tan noble, cálido y genuino que tienes. Admiro profundamente tu franqueza, admiro la forma en la que eres auténtica sin importar lo que digan los demás, y sobre todo, admiro la hermosa persona que eres por dentro.</p>
+                
+                <p>En este día de tu cumpleaños, quiero que te quede grabado algo muy importante: <strong>te quiero muchísimo</strong>. Y quiero que sepas, con total certeza, que siempre vas a contar conmigo. No importa si es para celebrar tus logros más grandes, para escucharte cuando el mundo se sienta pesado, o simplemente para estar en silencio haciéndote compañía. Aquí estaré para apoyarte incondicionalmente, porque amistades como la tuya valen oro.</p>
+                
+                <p>Espero que hoy recibas todo el amor del mundo. Que la vida te regale momentos hermosos y llenos de paz, tan lindos como las hortensias y lirios azules que tanto te gustan.</p>
+                
+                <p class="signature">Con todo mi cariño y admiración,<br>¡Feliz cumpleaños!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para la interactividad -->
+    <script>
+        function mostrarCarta() {
+            // Oculta la pantalla inicial
+            document.getElementById('intro-screen').classList.add('hidden');
+            
+            // Permite el scroll en el body por si la carta es muy larga
+            document.body.style.overflow = 'auto';
+            
+            // Muestra la carta con un pequeño retraso para el efecto visual
+            setTimeout(function() {
+                document.getElementById('letter-screen').classList.add('active');
+            }, 500);
+        }
+    </script>
 </body>
 </html>
